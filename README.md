@@ -36,6 +36,10 @@ The first command will build the source of the application. The second command w
 
 You can find the API Gateway Endpoint URL in the output values displayed after deployment.
 
+NB: in order to run via AWS API Gateway, at present the input parameters need to be defined by hand:
+* balance (decimal)
+* currency (e.g. £)
+
 ## Use the SAM CLI to build and test locally
 
 Build the application with the `sam build` command.
@@ -57,7 +61,7 @@ get-interest$ npm install
 get-interest$ npm run test
 ```
 
-NB: the tests need to be updated to exercise a number of target test points:
+NB: the tests need to be updated to pass in parameters and check outputs for a number of target test points:
 
 balance		interest rate	interest
 0.01		1				0
