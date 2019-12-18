@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'get-interest-test-app
+
+  Sample SAM Template for get-interest-test-app
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+Resources:
+  GetInterestFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetInterestFunction
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      Events:
+        GetInterest:
+          Type: Api
+          Properties:
+            Path: /get-interest
+            Method: get
+Outputs:
+  GetInterestApi:
+    Description: API Gateway endpoint URL for Prod stage for target function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/get-interest/
+  GetInterestFunction:
+    Description: Get Interest Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - GetInterestFunction
+      - Arn
+  GetInterestFunctionIamRole:
+    Description: Implicit IAM Role created for Get Interest function
+    Value:
+      Fn::GetAtt:
+      - GetInterestFunctionRole
+      - Arn

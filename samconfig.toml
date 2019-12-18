@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "GetInterestTest"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1j21rut8m1zwc"
+s3_prefix = "GetInterestTest"
+region = "eu-west-2"
+capabilities = "CAPABILITY_IAM"
+
