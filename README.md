@@ -82,18 +82,19 @@ get-interest$ npm run test
 
 NB: the tests need to be updated to pass in parameters and check outputs for a number of target test points:
 
-balance		interest rate	interest
-0.01		1				0
-1			1				0.01
-999.99		1				10
-1000		1.5				15
-1001		1.5				15.02
-4999.99		1.5				75
-5000		2				100
-9999.99		2				200
-10000		2.5				250
-49999.99	2.5				1250
-50000		3				1500
+| balance |	interest rate | calculated interest |
+| ------- | ------------- | ------------------- |
+| 0.01 | 1 | 0 |
+| 1	| 1 | 0.01 |
+| 999.99 | 1 | 10 |
+| 1000 | 1.5 | 15 |
+| 1001 | 1.5 | 15.02 |
+| 4999.99 | 1.5 | 75 |
+| 5000 | 2 | 100 |
+| 9999.99 | 2 | 200 |
+| 10000 | 2.5 | 250 |
+| 49999.99 | 2.5 | 1250 |
+| 50000 | 3 | 1500 |
 
 Also, the parameter 'queryStringParameters' is not understood when run locally & causes error.
 
@@ -111,4 +112,4 @@ aws cloudformation delete-stack --stack-name GetInterestTest
 * Externalise interest rates and thresholds into DynamoDB
 * Logging needs to be added and directed into CloudWatch Logs and / or S3
 * Error handling improved to e.g. catch missing / incorrect input parameters, etc.
-* Refactor interest rate calculation into a separate component that can be configured into the function, to allow different rate calculation mechanisms e.g. personal rate using AI & mining of other customer data.
+* Refactor interest rate calculation into a separate component that can be configured into the function, to allow different rate calculation mechanisms e.g. personal rate using AI & mining of logs & other customer data.
