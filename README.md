@@ -1,9 +1,28 @@
 # GetInterestTest
 
-This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
+This project contains source code and supporting files for a serverless application, together with corresponding API Gateway RESTful endpoint.
+
+The application takes the following parameters:
+* balance (decimal)
+* currency (e.g. £)
+
+and calculates the corresponding interest, returning it as JSON:
+
+{
+  "interest": "[amount, including currency]"
+}
+
+At present the interest rates and threshold points are hard-coded, but in a 'real' application these would be configurable as threshold / interest rate pairs in e.g. DynamoDB to provide Business flexibility. 
+
+In this case, the application would query the DB to obtain the interest rate corresponding to the highest threshold value that is lower or equal to the balance, and then use this for the interest calculation. 
+(Thresholds would be set in line with this logic, e.g. 0 = 1.0, 1000 = 1.5, 5000 = 2 and so on).
+
+## Project structure
+
+The project can be deployed with the SAM CLI. It includes the following files and folders.
 
 - get-interest - Code for the application's Lambda function.
-- events - Invocation events that you can use to invoke the function.
+- events - Invocation events that can be used to invoke the function.
 - get-interest/tests - Unit tests for the application code. 
 - template.yaml - A template that defines the application's AWS resources.
 
@@ -34,9 +53,9 @@ The first command will build the source of the application. The second command w
 * **Allow SAM CLI IAM role creation**: Many AWS SAM templates, including this example, create AWS IAM roles required for the AWS Lambda function(s) included to access AWS services. By default, these are scoped down to minimum required permissions. To deploy an AWS CloudFormation stack which creates or modified IAM roles, the `CAPABILITY_IAM` value for `capabilities` must be provided. If permission isn't provided through this prompt, to deploy this example you must explicitly pass `--capabilities CAPABILITY_IAM` to the `sam deploy` command.
 * **Save arguments to samconfig.toml**: If set to yes, the choices will be saved to a configuration file inside the project, so that in the future you can just re-run `sam deploy` without parameters to deploy changes to the application.
 
-You can find the API Gateway Endpoint URL in the output values displayed after deployment.
+The API Gateway Endpoint URL is shown in the output values displayed after deployment.
 
-NB: in order to run via AWS API Gateway, at present the input parameters need to be defined by hand:
+NB: in order to run via AWS API Gateway, at present the input parameters need to be defined by hand (thse will be incorporated into the template for API Gateway in future release):
 * balance (decimal)
 * currency (e.g. £)
 
@@ -80,9 +99,16 @@ Also, the parameter 'queryStringParameters' is not understood when run locally &
 
 ## Cleanup
 
-To delete the application that you created, use the AWS CLI. Assuming you used the project name for the stack name, you can run the following:
+To delete the created application, use the AWS CLI. Assuming the project name was used for the stack name, run the following:
 
 ```bash
 aws cloudformation delete-stack --stack-name GetInterestTest
 ```
 
+## TODO
+* Make sure unit tests exercise the existing target thresholds & rates, both above and below, and work within CI/CD pipeline
+* Ensure the whole solution is templated using CloudFormation, including ensuring Security requirements are addressed, and tagging for asset management (e.g. billing)
+* Externalise interest rates and thresholds into DynamoDB
+* Logging needs to be added and directed into CloudWatch Logs and / or S3
+* Error handling improved to e.g. catch missing / incorrect input parameters, etc.
+* Refactor interest rate calculation into a separate component that can be configured into the function, to allow different rate calculation mechanisms e.g. personal rate using AI & mining of other customer data.
